@@ -106,6 +106,21 @@ class ApiClient
         }
     }
 
+    public function generateLabel(array $request)
+    {
+        try {
+            $request = $this->decorateRequest($request);
+            $result = $this->client->WSI2_CreationEtiquette($request);
+            $this->checkResponse('WSI2_CreationEtiquette', $result);
+            $return['url'] = 'https://mondialrelay.fr/'.$result->WSI2_CreationEtiquetteResult->URL_Etiquette;
+            $return['shipping_number'] = $result->WSI2_CreationEtiquetteResult->ExpeditionNum;
+            return $return;
+
+        } catch (\SoapFault $e) {
+            throw new \Exception();
+        }
+    }
+
     public function generateTickets(array $request)
     {
 
